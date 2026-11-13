@@ -4,7 +4,7 @@ THE LANGUAGE FIELD GUIDE - PROJECT OVERVIEW & FUNCTION DIRECTORY
 
 1. PROJECT OVERVIEW
 --------------------------------------------------------------------------------
-The Language Field Guide is an editorial-grade, client-side web application
+The ANVESHA is an editorial-grade, client-side web application
 designed as a naturalist's field handbook for programming languages. It runs
 entirely in the browser (pure frontend React JS) with client-side persistence,
 cryptographic authentication, and local database simulation via localStorage.
