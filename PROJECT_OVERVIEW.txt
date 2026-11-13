@@ -1,0 +1,137 @@
+================================================================================
+THE LANGUAGE FIELD GUIDE - PROJECT OVERVIEW & FUNCTION DIRECTORY
+================================================================================
+
+1. PROJECT OVERVIEW
+--------------------------------------------------------------------------------
+The Language Field Guide is an editorial-grade, client-side web application
+designed as a naturalist's field handbook for programming languages. It runs
+entirely in the browser (pure frontend React JS) with client-side persistence,
+cryptographic authentication, and local database simulation via localStorage.
+
+Architecture:
+- Framework: React 18 + Vite
+- Styling: Vanilla CSS + Tailwind tokens (warm cream paper & dark ink theme)
+- Data Engine: Client-side mock REST API (`frontend/src/lib/api.js`)
+- Security: Web Crypto API salted SHA-256 password hashing & secure session tokens
+- Resilience: ErrorBoundary fallback and storage quota overflow protection
+- Code Quality: ESLint flat configuration (clean 0 errors)
+
+
+2. DIRECTORY STRUCTURE
+--------------------------------------------------------------------------------
+frontend/
+  ├── src/
+  │   ├── components/
+  │   │   ├── guide/        # Domain components (chips, rows, code blocks)
+  │   │   ├── site/         # Site layout and persistent shell
+  │   │   └── ui/           # Primitive UI widgets & ErrorBoundary
+  │   ├── context/          # Global authentication state
+  │   ├── data/             # Initial seeded specimens and notes
+  │   ├── lib/              # Client API, mock database, and crypto helpers
+  │   ├── pages/            # View routes (Discover, Detail, Contribute, etc.)
+  │   ├── App.jsx           # Root routing and error boundary wiring
+  │   ├── index.css         # Visual design tokens (light & dark mode)
+  │   └── main.jsx          # React DOM entry point
+  └── package.json          # Dependency specifications
+
+
+3. FUNCTION DIRECTORY (ONE-LINE DESCRIPTIONS)
+--------------------------------------------------------------------------------
+
+[frontend/src/lib/api.js]
+- getToken(): Retrieves active session token from localStorage.
+- setToken(token): Saves or clears active session token in localStorage.
+- clearToken(): Deletes session record from local DB and purges token storage.
+- hashPassword(str): Generates salted cryptographic SHA-256 hex digest using Web Crypto API.
+- genSessionToken(): Creates cryptographically secure random 24-byte hex session token.
+- getDb(): Reads and parses localStorage database or initializes it with seed data.
+- saveDb(db): Serializes database state to localStorage with quota-exceeded detection.
+- getCurrentUser(db): Finds and verifies active authenticated user from session token.
+- slugify(text): Sanitizes language name into URL-friendly lowercase hyphenated slug.
+- genId(prefix): Generates unique identifier using crypto.randomUUID with fallback.
+- api(path, options): Dispatches client-side mock REST endpoints for all data operations.
+
+[frontend/src/context/AuthContext.jsx]
+- AuthProvider({ children }): Context provider managing user authentication and active session.
+- loadUser(): Restores user session on initial application load.
+- signIn(email, password): Authenticates user credentials and stores session token.
+- register(name, email, password): Creates new user record with salted password hash and logs in.
+- signOut(): Terminates session, clears tokens, and resets user state to null.
+- useAuth(): Custom hook providing consuming components access to auth context.
+
+[frontend/src/components/ui/ErrorBoundary.jsx]
+- getDerivedStateFromError(error): Catches render crashes and flags component error state.
+- componentDidCatch(error, info): Logs uncaught component tree errors and diagnostics.
+- handleReset(): Clears error state and navigates back to index.
+- render(): Renders styled editorial error recovery screen or children.
+
+[frontend/src/components/ui/button.jsx]
+- Button(props): Renders custom styled button supporting primary, secondary, and size variants.
+
+[frontend/src/components/site/Shell.jsx]
+- Shell({ currentRoute, onNavigate, children }): Primary layout wrapper containing top navbar and footer colophon.
+- toggleTheme(): Switches document root class between light cream paper and dark ink mode.
+
+[frontend/src/components/guide/DarkCodeBlock.jsx]
+- DarkCodeBlock({ code, language, filename }): Inverted monospace code specimen block with file header.
+- handleCopy(): Copies source snippet to system clipboard with temporary visual confirmation.
+
+[frontend/src/components/guide/NumberedEntry.jsx]
+- NumberedEntry(props): Renders indexed specimen entry for field notes and practical guidelines.
+
+[frontend/src/components/guide/SpecimenRow.jsx]
+- SpecimenRow({ language, onSelect }): Renders catalog row item displaying specimen number, name, and meta.
+
+[frontend/src/components/guide/SyntaxChip.jsx]
+- SyntaxChip({ label, selected, onClick, ... }): Renders interactive paradigm badge or filter button.
+
+[frontend/src/components/guide/MonoEyebrow.jsx]
+- MonoEyebrow({ children, className }): Renders uppercase monospace section header eyebrow label.
+
+[frontend/src/components/guide/NewStamp.jsx]
+- NewStamp(): Renders rust-vermilion badge for community-filed specimens under 7 days old.
+
+[frontend/src/components/guide/EmptyState.jsx]
+- EmptyState({ title, description, actionText, onAction }): Renders styled fallback card when filters return no items.
+
+[frontend/src/App.jsx]
+- AppContent(): Internal route dispatcher managing navigation state, URL params, and shell.
+- navigate(to): Updates browser history with pushState and scrolls to top smoothly.
+- App(): Top-level root component wrapping application in ErrorBoundary and AuthProvider.
+
+[frontend/src/pages/DiscoverPage.jsx]
+- DiscoverPage({ onNavigate }): Catalog landing page with live counters, index list, and activity feed.
+- fetchData(): Concurrently queries languages, aggregate statistics, and recent activity items.
+- clearFilters(): Clears active search term, selected paradigm, and era filter selections.
+
+[frontend/src/pages/LanguageDetailPage.jsx]
+- LanguageDetailPage({ slug, onNavigate }): Detailed specimen article view with notes, code, and quick modals.
+- fetchDetail(): Fetches language record, associated field notes, and guidelines.
+- handleVote(type, id): Casts or toggles community upvote on note or guideline entry.
+- handleDelete(type, id): Deletes authored field note or guideline after user confirmation.
+- handleQuickFactSubmit(e): Validates and files a new field note from quick modal.
+- handleQuickGuidelineSubmit(e): Validates and files a new guideline from quick modal.
+
+[frontend/src/pages/ContributePage.jsx]
+- ContributePage({ initialType, onNavigate }): Dedicated filing page for new specimens, notes, and rules.
+- toggleParadigm(p): Adds or removes selected paradigm tag from language creation form.
+- handleLanguageSubmit(e): Validates release year bounds and stores new specimen entry.
+- handleFactSubmit(e): Validates and persists new community field note.
+- handleGuidelineSubmit(e): Validates and persists new rule with when-to-use and avoid fields.
+
+[frontend/src/pages/AuthPage.jsx]
+- AuthPage({ initialMode, nextUrl, onNavigate }): Authentication screen for signin and registration.
+- handleSubmit(e): Validates form inputs and executes sign-in or account registration.
+
+[frontend/src/pages/NotebookPage.jsx]
+- NotebookPage({ onNavigate }): Personal workspace showing user's filed specimens and editable entries.
+- fetchMyContributions(): Retrieves filtered languages, facts, and guidelines authored by current user.
+- handleDelete(type, id, label): Removes authored contribution and synchronizes notebook view.
+
+[frontend/src/pages/AboutPage.jsx]
+- AboutPage({ onNavigate }): Static colophon page outlining editorial philosophy and taxonomy.
+
+================================================================================
+END OF OVERVIEW
+================================================================================
