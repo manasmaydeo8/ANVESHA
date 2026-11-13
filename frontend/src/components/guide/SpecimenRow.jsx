@@ -1,6 +1,7 @@
 // src/components/guide/SpecimenRow.jsx
 import React from 'react';
 import { NewStamp } from './NewStamp';
+import { LanguageIcon } from './LanguageIcon';
 
 export function SpecimenRow({ language, onSelect }) {
   const specimenStr = String(language.specimen_no || 1).padStart(3, '0');
@@ -16,21 +17,24 @@ export function SpecimenRow({ language, onSelect }) {
       onClick={() => onSelect && onSelect(language.slug)}
       className="group flex flex-col sm:flex-row sm:items-baseline justify-between py-5 px-3 -mx-3 rounded-md hover:bg-card/70 transition-colors duration-150 cursor-pointer hairline-b"
     >
-      {/* Left: Specimen No + Name + Summary */}
-      <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6 max-w-2xl">
-        <span className="font-mono text-[12px] sm:text-[13px] text-muted-foreground whitespace-nowrap tracking-wide w-16">
-          NO. {specimenStr}
-        </span>
-        <div>
-          <div className="flex items-center gap-2.5">
-            <h3 className="font-display text-[24px] sm:text-[26px] font-normal text-foreground group-hover:text-primary transition-colors">
-              {language.name}
-            </h3>
-            {isNew && <NewStamp />}
+      {/* Left: Icon + Specimen No + Name + Summary */}
+      <div className="flex items-start gap-3 sm:gap-4 max-w-2xl">
+        <LanguageIcon language={language} size="sm" className="mt-0.5" />
+        <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6">
+          <span className="font-mono text-[12px] sm:text-[13px] text-muted-foreground whitespace-nowrap tracking-wide w-16">
+            NO. {specimenStr}
+          </span>
+          <div>
+            <div className="flex items-center gap-2.5">
+              <h3 className="font-display text-[24px] sm:text-[26px] font-normal text-foreground group-hover:text-primary transition-colors">
+                {language.name}
+              </h3>
+              {isNew && <NewStamp />}
+            </div>
+            <p className="text-[14px] sm:text-[15px] text-muted-foreground font-sans line-clamp-2 mt-0.5 leading-relaxed">
+              {language.tagline || language.overview}
+            </p>
           </div>
-          <p className="text-[14px] sm:text-[15px] text-muted-foreground font-sans line-clamp-2 mt-0.5 leading-relaxed">
-            {language.tagline || language.overview}
-          </p>
         </div>
       </div>
 
