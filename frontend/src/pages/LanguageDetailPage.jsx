@@ -5,6 +5,7 @@ import { MonoEyebrow } from "../components/guide/MonoEyebrow";
 import { SyntaxChip } from "../components/guide/SyntaxChip";
 import { NumberedEntry } from "../components/guide/NumberedEntry";
 import { DarkCodeBlock } from "../components/guide/DarkCodeBlock";
+import { LanguageIcon } from "../components/guide/LanguageIcon";
 import { Button } from "../components/ui/button";
 import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
@@ -200,9 +201,12 @@ export function LanguageDetailPage({ slug, onNavigate }) {
               {language.seeded ? "CURATED" : "COMMUNITY VERIFIED"}
             </MonoEyebrow>
 
-            <h1 className="font-display text-[44px] sm:text-[48px] text-foreground tracking-tight leading-[1.1]">
-              {language.name}
-            </h1>
+            <div className="flex items-center gap-4">
+              <LanguageIcon language={language} size="lg" />
+              <h1 className="font-display text-[44px] sm:text-[48px] text-foreground tracking-tight leading-[1.1]">
+                {language.name}
+              </h1>
+            </div>
 
             {language.tagline && (
               <p className="font-sans text-[18px] text-muted-foreground leading-relaxed">

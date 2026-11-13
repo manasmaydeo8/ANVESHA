@@ -3,6 +3,7 @@ import { api } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
 import { MonoEyebrow } from '../components/guide/MonoEyebrow';
 import { NumberedEntry } from '../components/guide/NumberedEntry';
+import { LanguageIcon } from '../components/guide/LanguageIcon';
 import { Button } from '../components/ui/button';
 import { toast } from 'sonner';
 
@@ -106,9 +107,12 @@ export function NotebookPage({ onNavigate }) {
                       <span>NO. {String(l.specimen_no).padStart(3, '0')}</span>
                       <span>ERA {l.year}</span>
                     </div>
-                    <h3 className="font-display text-[22px] text-foreground">
-                      {l.name}
-                    </h3>
+                    <div className="flex items-center gap-2.5">
+                      <LanguageIcon language={l} size="sm" />
+                      <h3 className="font-display text-[22px] text-foreground">
+                        {l.name}
+                      </h3>
+                    </div>
                     <p className="font-sans text-[13px] text-muted-foreground line-clamp-2">
                       {l.tagline || l.overview}
                     </p>
