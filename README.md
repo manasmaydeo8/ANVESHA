@@ -50,8 +50,8 @@ See [`PROJECT_OVERVIEW.txt`](./PROJECT_OVERVIEW.txt) for a full function-by-func
 ### Installation
 
 ```bash
-git clone https://github.com/manasmaydeo8/Aura.git
-cd Aura/frontend
+git clone https://github.com/manasmaydeo8/ANVESHA.git
+cd ANVESHA/frontend
 npm install
 ```
 
