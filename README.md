@@ -1,4 +1,4 @@
-# Aura — The Language Field Guide
+# ANVESHA — The Language Field Guide
 
 An editorial-grade, client-side web app that presents programming languages as a naturalist's field handbook — browse languages as "specimens," read community-filed notes and guidelines, and contribute your own entries. Built as a pure frontend React app with no backend: data, auth, and persistence all live in the browser via `localStorage`.
 
